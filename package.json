@@ -1,0 +1,24 @@
+{
+  "name": "node",
+  "version": "1.0.0",
+  "main": "script.js",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.18.2",
+    "clarifai": "^2.5.0",
+    "cors": "^2.8.4",
+    "express": "^4.16.2",
+    "knex": "^0.14.2",
+    "pg": "^7.4.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.12.7"
+  },
+  "description": ""
+}
