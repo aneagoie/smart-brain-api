@@ -15,10 +15,10 @@
     "cors": "^2.8.4",
     "express": "^4.16.2",
     "knex": "^0.14.2",
-    "pg": "^7.4.0",
-    "nodemon": "^1.12.7"
+    "pg": "^7.4.0"
   },
   "devDependencies": {
+    "nodemon": "^1.12.7"
   },
   "description": ""
 }
