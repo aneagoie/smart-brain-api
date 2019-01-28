@@ -24,6 +24,6 @@ services:
       POSTGRES_PASSWORD: secret
       POSTGRES_DB: smart-brain-docker
       POSTGRES_HOST: postgres
-    image: postgres
+    build: ./postgres
     ports:
       - "5432:5432"
