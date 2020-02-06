@@ -13,10 +13,15 @@ const db = knex({
   client: 'pg',
   connection: {
     host : '127.0.0.1',
-    user : 'aneagoie',
-    password : '',
+    user : 'nikin',
+    password : 'nikin',
     database : 'smart-brain'
   }
+});
+
+db.raw('select 1+1 as result').catch(err => {
+  console.log(err);
+  process.exit(1);
 });
 
 const app = express();
