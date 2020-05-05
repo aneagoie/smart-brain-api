@@ -13,9 +13,9 @@ const db = knex({
   client: 'pg',
   connection: {
     host : '127.0.0.1',
-    user : 'aneagoie',
+    user : '',
     password : '',
-    database : 'smart-brain'
+    database : 'smartbrain'
   }
 });
 
@@ -33,4 +33,5 @@ app.post('/imageurl', (req, res) => { image.handleApiCall(req, res)})
 
 app.listen(3000, ()=> {
   console.log('app is running on port 3000');
+  
 })
