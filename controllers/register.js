@@ -15,7 +15,11 @@ const handleRegister = (req, res, db, bcrypt) => {
         return trx('users')
           .returning('*')
           .insert({
-            email: loginEmail[0],
+            // If you are using knex.js version 1.0.0 or higher this now returns an array of objects. Therefore, the code goes from:
+            // loginEmail[0] --> this used to return the email
+            // TO
+            // loginEmail[0].email --> this now returns the email
+            email: loginEmail[0].email,
             name: name,
             joined: new Date()
           })
