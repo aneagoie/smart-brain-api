@@ -5,6 +5,7 @@ const app = new Clarifai.App({
  apiKey: 'YOUR API KEY HERE' 
 });
 
+
 const handleApiCall = (req, res) => {
   app.models
     // HEADS UP! Sometimes the Clarifai Models can be down or not working as they are constantly getting updated.
