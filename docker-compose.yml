@@ -1,0 +1,33 @@
+version: '3.8'
+services:
+
+  # Backend
+  smart-brain-api:
+    # env_file:
+    #   - ./.private/api-keys.env "Another way to insert env variables" 
+    container_name: backend
+    build: ./
+    volumes:
+      - ./:/usr/src/smart-brain-api
+    command: npm start
+    working_dir: /usr/src/smart-brain-api
+    ports:
+      - "3000:3000"
+    environment:
+      POSTGRES_URI: postgres://admin:password@postgres:5432/smart-brain
+
+# PostgreSQL
+  postgres:
+    image: postgres:12.4 
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_URL: postgres://admin:password@localhost:5432/smart-brain
+      POSTGRES_DB: smart-brain
+      POSTGRES_HOST: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+      - ./postgres/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
+      - ./postgres/fill_tables.sql:/docker-entrypoint-initdb.d/fill_tables.sql
