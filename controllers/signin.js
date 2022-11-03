@@ -36,14 +36,17 @@ const handleSignin = (db, bcrypt, req, res) => {
     .catch((err) => Promise.reject('unable to get user'));
 };
 
-const getAuthTokenId = (req, res) => {
+const getAuthTokenId = async (req, res) => {
   const { authorization } = req.headers;
-  return redisClient.get(authorization, (err, reply) => {
-    if (err || !reply) {
-      return res.status(400).json('Unauthorized');
+  try {
+    const id = await redisClient.get(authorization);
+    if (!id) {
+      return res.status(401).send('Unauthorized');
     }
-    return res.json({ id: reply });
-  });
+    return res.json({ id });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const signToken = (email) => {
