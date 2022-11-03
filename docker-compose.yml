@@ -15,6 +15,7 @@ services:
       - "3000:3000"
     environment:
       POSTGRES_URI: postgres://admin:password@postgres:5432/smart-brain
+      REDIS_URI: redis://redis:6379
 
 # PostgreSQL
   postgres:
@@ -31,3 +32,9 @@ services:
       - ./postgres-data:/var/lib/postgresql/data
       - ./postgres/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
       - ./postgres/fill_tables.sql:/docker-entrypoint-initdb.d/fill_tables.sql
+
+# Redis
+  redis:
+    image: redis
+    ports: 
+      - "6379:6379"
