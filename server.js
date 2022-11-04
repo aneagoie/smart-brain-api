@@ -8,6 +8,7 @@ const morgan = require('morgan');
 
 const register = require('./controllers/register');
 const signin = require('./controllers/signin');
+const signout = require('./controllers/signout');
 const profile = require('./controllers/profile');
 const image = require('./controllers/image');
 const auth = require('./controllers/authorization');
@@ -41,6 +42,9 @@ app.put('/image', auth.requireAuth, (req, res) => {
 });
 app.post('/imageurl', auth.requireAuth, (req, res) => {
   image.handleApiCall(req, res);
+});
+app.delete('/signout', auth.requireAuth, (req, res) => {
+  signout.signoutUser(req, res);
 });
 
 app.listen(3000, () => {
