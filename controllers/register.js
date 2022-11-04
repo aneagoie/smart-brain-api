@@ -1,3 +1,5 @@
+const { createSession } = require('../controllers/signin');
+
 const handleRegister = (req, res, db, bcrypt) => {
   const { email, name, password } = req.body;
   console.log(req.body);
@@ -21,9 +23,13 @@ const handleRegister = (req, res, db, bcrypt) => {
             name: name,
             joined: new Date(),
           })
-          .then((user) => {
-            res.json(user[0]);
-          });
+          .then((user) => user[0])
+          .then((data) => {
+            return data.id && data.email
+              ? createSession(data)
+              : Promise.reject(data);
+          })
+          .then((session) => res.json(session));
       })
       .then(trx.commit)
       .catch(trx.rollback);
