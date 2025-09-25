@@ -1,17 +1,52 @@
 const Clarifai = require('clarifai');
 
-//You must add your own API key here from Clarifai. 
-const app = new Clarifai.App({
- apiKey: 'YOUR API KEY HERE' 
-});
+//OLD WAY: 
+// const app = new Clarifai.App({
+//  apiKey: 'YOUR API KEY HERE' 
+// });
+
+const returnClarifaiRequestOptions = (imageUrl) => {
+  // Your PAT (Personal Access Token) can be found in Clarifai's Account Security section
+  const PAT = 'YOUR_PAT_HERE';
+  // You can keep the 'clarifai'/'main' without changing it to your own unless you want to. 
+  // This will use the public Clarifai model so you dont need to create an app:
+  const USER_ID = 'clarifai';       
+  const APP_ID = 'main';
+
+  const IMAGE_URL = imageUrl;
+
+  const raw = JSON.stringify({
+      "user_app_id": {
+          "user_id": USER_ID,
+          "app_id": APP_ID
+      },
+      "inputs": [
+          {
+              "data": {
+                  "image": {
+                      "url": IMAGE_URL
+                  }
+              }
+          }
+      ]
+  });
+
+  return {
+      method: 'POST',
+      headers: {
+          'Accept': 'application/json',
+          'Authorization': 'Key ' + PAT
+      },
+      body: raw
+  };
+}
 
 const handleApiCall = (req, res) => {
-  // HEADS UP! Sometimes the Clarifai Models can be down or not working as they are constantly getting updated.
-  // A good way to check if the model you are using is up, is to check them on the clarifai website. For example,
-  // for the Face Detect Mode: https://www.clarifai.com/models/face-detection
-  // If that isn't working, then that means you will have to wait until their servers are back up. 
-
-  app.models.predict('face-detection', req.body.input)
+  //OLD WAY:
+  // app.models.predict('face-detection', req.body.input)
+  //NEW WAY:
+  fetch("https://api.clarifai.com/v2/models/" + 'face-detection' + "/outputs", returnClarifaiRequestOptions(req.body.input))
+    .then(response => response.json())
     .then(data => {
       res.json(data);
     })
