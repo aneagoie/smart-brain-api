@@ -8,7 +8,7 @@ const Clarifai = require('clarifai');
 //OLDER WAY: We no longer use Clarifai API
 const returnClarifaiRequestOptions = (imageUrl) => {
   // Your PAT (Personal Access Token) can be found in Clarifai's Account Security section
-  const PAT = '788d54cbefaf483d86e17dead43c3a1d';
+  const PAT = 'YOUR_PAT_HERE';
   // You can keep the 'clarifai'/'main' without changing it to your own unless you want to. 
   // This will use the public Clarifai model so you dont need to create an app:
   const USER_ID = 'clarifai';       
