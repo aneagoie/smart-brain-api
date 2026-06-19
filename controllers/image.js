@@ -1,10 +1,11 @@
 const Clarifai = require('clarifai');
 
-//OLD WAY: 
+//OLDEST WAY: 
 // const app = new Clarifai.App({
 //  apiKey: 'YOUR API KEY HERE' 
 // });
 
+//OLDER WAY: We no longer use Clarifai API
 const returnClarifaiRequestOptions = (imageUrl) => {
   // Your PAT (Personal Access Token) can be found in Clarifai's Account Security section
   const PAT = 'YOUR_PAT_HERE';
@@ -42,15 +43,37 @@ const returnClarifaiRequestOptions = (imageUrl) => {
 }
 
 const handleApiCall = (req, res) => {
-  //OLD WAY:
+  //OLDEST WAY:
   // app.models.predict('face-detection', req.body.input)
-  //NEW WAY:
-  fetch("https://api.clarifai.com/v2/models/" + 'face-detection' + "/outputs", returnClarifaiRequestOptions(req.body.input))
-    .then(response => response.json())
-    .then(data => {
-      res.json(data);
-    })
-    .catch(err => res.status(400).json('unable to work with API'))
+  //OLDER WAY:
+  // fetch("https://api.clarifai.com/v2/models/" + 'face-detection' + "/outputs", returnClarifaiRequestOptions(req.body.input))
+  //   .then(response => response.json())
+  //   .then(data => {
+  //     console.log('hit:', data)
+  //     res.json(data);
+  //   })
+  //   .catch(err => res.status(400).json('unable to work with API'))
+  const sendImageToHuggingFaceWithFetch = async (imageUrl) => {
+    const response = await fetch(imageUrl);
+    const contentType = response.headers.get("content-type");
+    const imageBlob = await response.blob();
+
+    const apiResponse = await fetch("https://router.huggingface.co/hf-inference/models/facebook/detr-resnet-50",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${"YOUR_API_KEY_HERE"}`,
+          "Content-Type": contentType,
+        },
+        body: imageBlob,
+      },
+    );
+
+    const result = await apiResponse.json();
+    res.json(result);
+  };
+  
+  sendImageToHuggingFaceWithFetch(req.body.input)
 }
 
 const handleImage = (req, res, db) => {
@@ -66,6 +89,7 @@ const handleImage = (req, res, db) => {
     res.json(entries[0].entries);
   })
   .catch(err => res.status(400).json('unable to get entries'))
+  return
 }
 
 module.exports = {
